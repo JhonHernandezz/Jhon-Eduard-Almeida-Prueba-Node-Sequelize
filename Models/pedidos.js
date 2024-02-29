@@ -21,6 +21,37 @@ export class Pedidos extends Model{
         }
     }
 
+    static async getPedidoId(req){
+        let id = req.params.id_user
+
+        try {
+
+            let respuesta = await db.query(`
+            SELECT 
+                t.id as id_tienda, 
+                t.nombre, 
+                ROUND(SUM(p.valor_final), 0) as valor_total,
+                COUNT(p.id) as cantidad,
+                JSON_ARRAYAGG(
+                    JSON_OBJECT("id", p.id, "fecha", p.entrega_fecha, "estado", "Confirmado", "valor_final", ROUND(p.valor_final, 0))
+                ) as pedidos
+            FROM
+                pedidos as p
+            INNER JOIN
+                tiendas as t ON t.id = p.id_tienda
+            WHERE
+                p.id_user = ${id}
+            GROUP BY
+                id_tienda, t.nombre;
+            `)
+
+            return respuesta[0]
+
+        } catch (error) {
+            return error
+        }
+    }
+
     static async postNuevoPedido(req){
 
         let instrucciones = req.body.instrucciones

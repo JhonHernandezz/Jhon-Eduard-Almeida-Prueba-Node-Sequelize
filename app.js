@@ -14,7 +14,7 @@ app.use(express.json())
 app.use('/productos', productoStorage)
 app.use('/tienda_productos', tiendaProductosStorage)
 app.use('/carritos', carritoStorage)
-app.use('/pedidos', pedidoStorage)
+app.use('/', pedidoStorage)
 
 let config = JSON.parse(process.env.MY_SERVER)
 app.listen(config, () => console.log(`http://${config.hostname}:${config.port}`))
