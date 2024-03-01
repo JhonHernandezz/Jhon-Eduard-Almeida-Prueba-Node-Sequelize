@@ -128,7 +128,7 @@ Ej data
      - POST 
 
 ```
-http://127.10.10.10:5010/pedidos
+http://127.10.10.10:5010/
 ```
 
 Ej data
