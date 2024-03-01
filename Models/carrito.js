@@ -48,18 +48,7 @@ export class Carritos extends Model{
             if (!consultaTienda) {
                 return ('Esta tienda no existe')
             }
-
-            let consultaCarritoProducto = await Carritos.findOne({
-                where: {
-                    id_user: req.body.id_user,
-                    id_producto: idProducto
-                }
-            })
-
-            if (consultaCarritoProducto) {
-                return ('Ya agrego este producto al carrito, agregue uno nuevo o actualice la cantidad')
-            }
-
+            
             let respuesta = await Carritos.create(data)
             return ('Carrito agregado exitosamente')
 

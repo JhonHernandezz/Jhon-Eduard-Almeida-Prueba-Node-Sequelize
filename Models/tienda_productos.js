@@ -23,12 +23,12 @@ export class Tienda_Productos extends Model {
         try {
             let respuesta = await Tienda_Productos.findOne({
                 where: {
-                    id: id
+                    id_producto: id
                 }
             })
 
             if (!respuesta) {
-                return ('Este registro no existe')
+                return ('Este registro de producto no existe en esta tienda')
             }
 
             return respuesta
@@ -43,6 +43,17 @@ export class Tienda_Productos extends Model {
         let id = parseInt(req.params.id_tienda)
 
         try {
+
+            let consultaTienda = await Tienda_Productos.findOne({
+                where: {
+                    id_tienda: id
+                }
+            })
+
+            if (!consultaTienda) {
+                return ('Esta tienda no existe')
+            }
+
 
             let data = await db.query(`
             SELECT 
@@ -66,6 +77,10 @@ export class Tienda_Productos extends Model {
                 AND tpm.estado = 1
                 AND CURDATE() BETWEEN tpm.inicio AND tpm.fin
             `)
+
+            if (data[0].length == '') {
+                return ('Datos no encontrados, recuerde que la tienda se filtra por la fecha actual')
+            }
 
             let newData = data[0].map(value => { 
                 return {
@@ -124,17 +139,6 @@ export class Tienda_Productos extends Model {
             if (!consultaTienda) {
                 return ('Esta tienda no existe')
             }
-
-            let consultaProductoTienda = await Tienda_Productos.findOne({
-                where: {
-                    id_tienda: idTienda,
-                    id_producto: idProducto
-                }
-            })
-
-            if (consultaProductoTienda) {
-                return ('Este producto ya existe en esta tienda')
-            } 
 
             let respuesta = await Tienda_Productos.create(data)
             return ('Producto agregado en la tienda exitosamente')
@@ -211,7 +215,6 @@ Tienda_Productos.init({
     },
     compra_maxima: {
         type: DataTypes.DECIMAL(3, 1),
-        defaultValue: '1.0',
         allowNull: false,
         validate: {
             notNull: {

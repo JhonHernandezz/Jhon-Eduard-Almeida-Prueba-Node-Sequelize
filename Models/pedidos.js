@@ -31,14 +31,32 @@ export class Pedidos extends Model{
                 t.id as id_tienda, 
                 t.nombre, 
                 ROUND(SUM(p.valor_final), 0) as valor_total,
-                COUNT(p.id) as cantidad,
+                COUNT(DISTINCT p.id) as cantidad,
                 JSON_ARRAYAGG(
-                    JSON_OBJECT("id", p.id, "fecha", p.entrega_fecha, "estado", "Confirmado", "valor_final", ROUND(p.valor_final, 0))
+                    JSON_OBJECT(
+                        "id", p.id, 
+                        "fecha", p.entrega_fecha, 
+                        "estado", "Confirmado", 
+                        "valor_final", ROUND(p.valor_final, 0), 
+                        "productos", JSON_OBJECT("id_producto", pd.id, 
+                        "nombre", pd.nombre, 
+                        "presentacion", pd.presentacion, 
+                        "cantidad", pp.cantidad, 
+                        "valor", pp.valor_unitario, 
+                        "valor_promocion", pp.valor_unitario_promocion,
+                        "valor_total", ROUND((pp.valor_unitario * pp.cantidad), 0))
+                    )
                 ) as pedidos
             FROM
                 pedidos as p
             INNER JOIN
                 tiendas as t ON t.id = p.id_tienda
+            LEFT JOIN
+                pedidos_productos as pp ON pp.id_pedido = p.id
+            LEFT JOIN 
+                productos as pd ON pp.id_producto = pd.id
+            LEFT JOIN
+                carritos as c ON pd.id = c.id_producto 
             WHERE
                 p.id_user = ${id}
             GROUP BY

@@ -6,7 +6,9 @@ let db = await Con()
 
 export class Promociones extends Model{}
 
-Promociones.init({}, {
+Promociones.init({
+    
+}, {
     sequelize: db,
     createdAt: false,
     updatedAt: false,
