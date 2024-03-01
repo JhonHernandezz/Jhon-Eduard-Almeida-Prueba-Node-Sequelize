@@ -4,107 +4,7 @@ import { Con } from "../Controllers/InstCon.js";
 
 let db = await Con()
 
-export class Productos extends Model {
-    static async getAllProductos(){
-        try {
-            let respuesta = await Productos.findAll()
-            return respuesta
-        } catch (error) {
-            return error.message
-        }
-    }
-
-    static async getProductos(req){
-        let id = req.params.id
-
-        try {
-            let respuesta = await Productos.findOne({
-                where: {
-                    id: id
-                }
-            })
-
-            if (!respuesta) {
-                return ('Este producto no existe')
-            }
-
-            return respuesta
-        } catch (error) {
-            return error.message
-        }
-    }
-
-    static async postProductos(req){
-        let data = req.body
-
-        try {
-
-            let respuesta = await Productos.create(data)
-            return ('Producto agregado exitosamente')
-
-        } catch (error) {
-            return error.errors[0].message
-        }
-    }
-
-    static async putProductos(req){
-        let data = req.body
-        let id = req.params.id
-
-        try {
-
-            let consulta = await Productos.findOne({
-                where: {
-                    id: id
-                }
-            })
-
-            if (!consulta) {
-                return ('Este producto no existe')
-            }
-
-            let respuesta = await Productos.update(data, {
-                where: {
-                    id: id
-                }
-            })
-
-            return ('Producto actualizado exitosamente')
-
-        } catch (error) {
-            return error
-        }
-    }
-
-    static async deleteProductos(req){
-        let id = req.params.id
-
-        try {
-
-            let consulta = await Productos.findOne({
-                where: {
-                    id: id
-                }
-            })
-
-            if (!consulta) {
-                return ('Este producto no existe')
-            }
-
-            let respuesta = await Productos.destroy({
-                where: {
-                    id: id
-                }
-            })
-            
-            return ('Producto eliminado exitosamente')
-
-        } catch (error) {
-            return error
-        }
-    }
-
-}
+export class Productos extends Model {}
 
 Productos.init({
     id: {
@@ -126,7 +26,7 @@ Productos.init({
         comment: '0=No 1=Si... Para evaluar disponibilidad, descuentos y otros en productos_kits'
     },
     barcode: {  
-        type: DataTypes.STRING(30),
+        type: DataTypes.STRING(30), 
         allowNull: false,
         unique: {
             args: true,
