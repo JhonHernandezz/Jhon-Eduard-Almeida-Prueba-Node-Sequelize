@@ -5,13 +5,13 @@ import { limit } from "../Helpers/limit/limit.js";
 
 let tiendaProductosStorage = Router()
 
-tiendaProductosStorage.get('/', limit(), instTiendaProductos.getAllTiendaPro)
-tiendaProductosStorage.get('/:id', limit(), instTiendaProductos.getTiendaPro)
+tiendaProductosStorage.get('/', limit(), instTiendaProductos.getAllTiendaProductos)
+tiendaProductosStorage.get('/:id', limit(), instTiendaProductos.getTiendaProductos)
 
-tiendaProductosStorage.get('/api/catalogo/:id_tienda', limit(), instTiendaProductos.getProductosTi)
+tiendaProductosStorage.get('/api/catalogo/:id_tienda', limit(), instTiendaProductos.getProductosTienda)
 
-tiendaProductosStorage.post('/', instTiendaProductos.postTiendaPro)
-tiendaProductosStorage.put('/:id', instTiendaProductos.putTiendaPro)
-tiendaProductosStorage.delete('/:id', instTiendaProductos.deleteTiendaPro)
+tiendaProductosStorage.post('/', instTiendaProductos.postTiendaProductos)
+tiendaProductosStorage.put('/:id_tienda_productos', instTiendaProductos.putTiendaProductos)
+tiendaProductosStorage.delete('/:id', instTiendaProductos.deleteTiendaProductos)
 
 export default tiendaProductosStorage

@@ -6,9 +6,9 @@ import { instPedidos } from "../Controllers/instPedidos.js";
 
 let pedidoStorage = Router()
 
-pedidoStorage.get('/', limit(), instPedidos.getAllPed)
-pedidoStorage.get('/api/pedidos/:id_user', limit(), instPedidos.getPedId)
+pedidoStorage.get('/', limit(), instPedidos.getAllPedidos)
+pedidoStorage.get('/api/pedidos/:id_user', limit(), instPedidos.getPedidoId)
 
-pedidoStorage.post('/', instPedidos.postPed)
+pedidoStorage.post('/', instPedidos.postNuevoPedido)
 
 export default pedidoStorage
